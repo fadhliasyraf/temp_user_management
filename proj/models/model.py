@@ -13,9 +13,10 @@ class User(db.Model):
     date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     isDeleted = db.Column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, name, rank, username, password):
+    def __init__(self, name, rank, role, username, password):
         self.uuid = uuid.uuid4().hex
         self.name = name
         self.rank = rank
+        self.role = role
         self.username = username
         self.password = password

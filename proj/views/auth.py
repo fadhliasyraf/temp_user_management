@@ -16,7 +16,16 @@ def register_user():
         print(params)
         print(response)
 
-        newUser = User()
+        newUser = User(
+            params["name"],
+            params["rank"],
+            params["role"],
+            params["username"],
+            params["password"],
+        )
+
+        db.session.add(newUser)
+        db.session.commit()
 
 
     except Exception as e:
