@@ -124,7 +124,7 @@ def user_list():
     response = dict(code='111', data=list(), description="User registered successfully", status="OK")
     try:
 
-        allUsers = User.query.all()
+        allUsers = User.query.filter(User.isDeleted == False).all()
 
         for user in allUsers:
             print(user)
