@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, request, make_response,jsonify
 import sys, os, json
 from proj.models.model import *
 from proj.views import func
-from argon2 import PasswordHasher
+from pwdlib import PasswordHash
+
 
 
 bp_auth = Blueprint('bp_auth', __name__)
@@ -20,7 +21,8 @@ def login():
 
         result = dict()
 
-        ph = PasswordHasher()
+        pwd_hasher = PasswordHash.recommended()
+        # hashedPassword = pwd_hasher.hash(params['password'])
 
         user_id = ""
 
@@ -30,11 +32,10 @@ def login():
 
         if userLogin:
             result["usernameStatus"] = True
-            if userLogin.password != params["password"]:
+            if pwd_hasher.verify(params['password'], userLogin.password):
+                pass
+            else:
                 raise Exception("Login failed. Incorrect Credentials.")
-        #     if ph.verify(uc.password, param['password']):
-        #         result["passwordStatus"] = True
-        #         user_id = uc.user_profile_id
 
         objUser = func.convert(userLogin)
 

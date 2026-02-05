@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, make_response,jsonify
 import sys, os, json
 from proj.models.model import *
 from proj.views import func
+from pwdlib import PasswordHash
 
 bp_user = Blueprint('bp_user', __name__)
 
@@ -79,8 +80,8 @@ def register_user():
     try:
         params = request.get_json()
         print(params)
-        print(response)
-
+        pwd_hasher = PasswordHash.recommended()
+        hashedPassword = pwd_hasher.hash(params['password'])
 
 
         newUser = User(
@@ -88,7 +89,7 @@ def register_user():
             params["rank"],
             params["role"],
             params["username"],
-            params["password"],
+            hashedPassword,
         )
 
         db.session.add(newUser)
