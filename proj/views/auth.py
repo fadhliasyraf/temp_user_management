@@ -41,20 +41,23 @@ def login():
         params = request.form['ref']
         params = json.loads(params)
         print(params)
-        print(response)
 
 
         result = dict()
-        result["usernameStatus"] = False
-        result["passwordStatus"] = False
+
         # ph = PasswordHasher()
-        # uc = UserAccount.query.filter(UserAccount.isDeleted == False).all()
+
         user_id = ""
 
         uc = User.query.filter(User.username == params["username"], User.isDeleted == False).first()
+        if not uc:
+            raise Exception("Login failed. Incorrect Credentials.")
 
-        # if uc:
-        #     result["usernameStatus"] = True
+        if uc:
+            result["usernameStatus"] = True
+            print(uc)
+            if uc.password != params["password"]:
+                raise Exception("Login failed. Incorrect Credentials.")
         #     if ph.verify(uc.password, param['password']):
         #         result["passwordStatus"] = True
         #         user_id = uc.user_profile_id
