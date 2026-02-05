@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, make_response,jsonify
 import sys, os, json
 from proj.models.model import *
+from proj.views import func
 
 
 bp_auth = Blueprint('bp_auth', __name__)
@@ -23,20 +24,24 @@ def login():
 
         user_id = ""
 
-        uc = User.query.filter(User.username == params["username"], User.isDeleted == False).first()
-        if not uc:
+        userLogin = User.query.filter(User.username == params["username"], User.isDeleted == False).first()
+        if not userLogin:
             raise Exception("Login failed. Incorrect Credentials.")
 
-        if uc:
+        if userLogin:
             result["usernameStatus"] = True
-            print(uc)
-            if uc.password != params["password"]:
+            if userLogin.password != params["password"]:
                 raise Exception("Login failed. Incorrect Credentials.")
         #     if ph.verify(uc.password, param['password']):
         #         result["passwordStatus"] = True
         #         user_id = uc.user_profile_id
 
-        result["user_id"] = user_id
+        objUser = func.convert(userLogin)
+
+        del objUser["username"]
+        del objUser["password"]
+
+        response["data"] = objUser
 
     except Exception as e:
         msg = str(e)
