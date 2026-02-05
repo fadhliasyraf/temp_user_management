@@ -5,13 +5,51 @@ from proj.views import func
 
 bp_user = Blueprint('bp_user', __name__)
 
+@bp_user.route('/get_profile', methods=['POST'])
+def get_profile():
+    response = dict(code='111', data=dict(), description="User profile fetched successfully", status="OK")
+    try:
+        params = request.get_json()
+
+        print(params)
+        userProfile = User.query.filter(User.uuid == params["uuid"], User.isDeleted == False).first()
+
+        if userProfile:
+            objUser = func.convert(userProfile)
+            del objUser["username"]
+            del objUser["password"]
+
+            response["data"] = objUser
+
+
+    except Exception as e:
+        msg = str(e)
+        response = dict(code='000', data='', description=str(msg), status="FAILED")
+
+    return jsonify(response)
+
+@bp_user.route('/get_user_count', methods=['GET'])
+def get_user_count():
+    response = dict(code='111', data='', description="User count fetched successfully", status="OK")
+    try:
+
+        allUsersCount = User.query.count()
+
+
+        response["data"] = allUsersCount
+
+
+    except Exception as e:
+        msg = str(e)
+        response = dict(code='000', data='', description=str(msg), status="FAILED")
+
+    return jsonify(response)
 
 @bp_user.route('/update_user', methods=['POST'])
 def update_user():
     response = dict(code='111', data=list(), description="User updated successfully", status="OK")
     try:
-        params = request.form['ref']
-        params = json.loads(params)
+        params = request.get_json()
         print(params)
 
         updatedUser = User.query.filter(User.uuid == params["uuid"], User.isDeleted == False).first()
@@ -39,8 +77,7 @@ def update_user():
 def register_user():
     response = dict(code='111', data=dict(), description="User registered successfully", status="OK")
     try:
-        params = request.form['ref']
-        params = json.loads(params)
+        params = request.get_json()
         print(params)
         print(response)
 

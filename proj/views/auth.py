@@ -13,8 +13,7 @@ bp_auth = Blueprint('bp_auth', __name__)
 def login():
     response = dict(code='111', data=dict(), description="Logged in successfully", status="OK")
     try:
-        params = request.form['ref']
-        params = json.loads(params)
+        params = request.get_json()
         print(params)
 
 
