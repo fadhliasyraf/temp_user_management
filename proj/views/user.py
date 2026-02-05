@@ -6,6 +6,26 @@ from pwdlib import PasswordHash
 
 bp_user = Blueprint('bp_user', __name__)
 
+
+@bp_user.route('/delete_user', methods=['POST'])
+def delete_user():
+    response = dict(code='111', data=dict(), description="User deleted successfully", status="OK")
+    try:
+        params = request.get_json()
+
+        userProfile = User.query.filter(User.uuid == params["uuid"], User.isDeleted == False).first()
+
+        if userProfile:
+            userProfile.isDeleted = True
+
+        db.session.commit()
+
+    except Exception as e:
+        msg = str(e)
+        response = dict(code='000', data='', description=str(msg), status="FAILED")
+
+    return jsonify(response)
+
 @bp_user.route('/get_profile', methods=['POST'])
 def get_profile():
     response = dict(code='111', data=dict(), description="User profile fetched successfully", status="OK")
