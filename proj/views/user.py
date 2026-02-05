@@ -81,6 +81,8 @@ def register_user():
         print(params)
         print(response)
 
+
+
         newUser = User(
             params["name"],
             params["rank"],

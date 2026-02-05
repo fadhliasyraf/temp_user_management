@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, make_response,jsonify
 import sys, os, json
 from proj.models.model import *
 from proj.views import func
+from argon2 import PasswordHasher
 
 
 bp_auth = Blueprint('bp_auth', __name__)
@@ -19,7 +20,7 @@ def login():
 
         result = dict()
 
-        # ph = PasswordHasher()
+        ph = PasswordHasher()
 
         user_id = ""
 
