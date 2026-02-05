@@ -7,32 +7,6 @@ bp_auth = Blueprint('bp_auth', __name__)
 
 
 
-@bp_auth.route('/register_user', methods=['POST'])
-def register_user():
-    response = dict(code='111', data=dict(), description="User registered successfully", status="OK")
-    try:
-        params = request.form['ref']
-        params = json.loads(params)
-        print(params)
-        print(response)
-
-        newUser = User(
-            params["name"],
-            params["rank"],
-            params["role"],
-            params["username"],
-            params["password"],
-        )
-
-        db.session.add(newUser)
-        db.session.commit()
-
-
-    except Exception as e:
-        msg = str(e)
-        response = dict(code='000', data='', description=str(msg), status="FAILED")
-
-    return jsonify(response)
 
 @bp_auth.route('/login', methods=['POST'])
 def login():
