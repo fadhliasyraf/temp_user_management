@@ -30,10 +30,9 @@ def delete_user():
 def get_profile():
     response = dict(code='111', data=dict(), description="User profile fetched successfully", status="OK")
     try:
-        params = request.get_json()
+        uuidParam = request.get_json()
 
-        print(params)
-        userProfile = User.query.filter(User.uuid == params["uuid"], User.isDeleted == False).first()
+        userProfile = User.query.filter(User.uuid == uuidParam, User.isDeleted == False).first()
 
         if userProfile:
             objUser = func.convert(userProfile)
@@ -81,8 +80,6 @@ def update_user():
         updatedUser.name = params["name"]
         updatedUser.rank = params["rank"]
         updatedUser.role = params["role"]
-        updatedUser.username = params["username"]
-        updatedUser.password = params["password"]
 
         db.session.commit()
 
