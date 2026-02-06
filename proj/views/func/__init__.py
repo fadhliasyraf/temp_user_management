@@ -28,6 +28,12 @@ def convert(object):
                     for role in v:
                         listRole.append(convert(role))
                     data[k] = listRole
+            elif k == 'rank':
+                if v:
+                    objRank = convert(v)
+                    del objRank["isDeleted"]
+                    del objRank["date_created"]
+                    data[k] = objRank
 
     except:
         data = {}

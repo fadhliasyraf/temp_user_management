@@ -47,10 +47,10 @@ class User(db.Model):
         backref=db.backref('users', lazy=True)
     )
 
-    def __init__(self, name, rank, username, password):
+    def __init__(self, name, rank_uuid, username, password):
         self.uuid = uuid.uuid4().hex
         self.name = name
-        self.rank = rank
+        self.rank_uuid = rank_uuid
         self.username = username
         self.password = password
 
