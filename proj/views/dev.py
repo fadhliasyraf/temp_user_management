@@ -7,7 +7,7 @@ from pwdlib import PasswordHash
 bp_dev = Blueprint('bp_dev', __name__)
 
 
-@bp_dev.route('/inject_role_lov', methods=['POST'])
+@bp_dev.route('/inject_role_lov', methods=['GET'])
 def inject_role_lov():
     response = dict(code='111', data=dict(), description="Role injected successfully", status="OK")
     try:
@@ -27,7 +27,7 @@ def inject_role_lov():
 
     return jsonify(response)
 
-@bp_dev.route('/inject_rank_lov', methods=['POST'])
+@bp_dev.route('/inject_rank_lov', methods=['GET'])
 def inject_rank_lov():
     response = dict(code='111', data=dict(), description="Rank injected successfully", status="OK")
     try:
