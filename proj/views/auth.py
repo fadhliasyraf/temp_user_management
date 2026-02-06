@@ -45,7 +45,7 @@ def user_authentication():
             raise Exception("Authentication failed. Role is missing.")
 
         tokenGenerated = uuid.uuid4().hex
-        userLogin.token = tokenGenerated
+        userLogin.auth_token = tokenGenerated
 
         db.session.commit()
 
@@ -97,7 +97,7 @@ def admin_login():
         response["data"] = objUser
 
         tokenGenerated = uuid.uuid4().hex
-        userLogin.token = tokenGenerated
+        userLogin.auth_token = tokenGenerated
         db.session.commit()
 
     except Exception as e:

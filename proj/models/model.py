@@ -33,7 +33,7 @@ class User(db.Model):
     )
     username = db.Column(db.String(255),unique=True)
     password = db.Column(db.String(255))
-    token = db.Column(db.String(32),nullable=True)
+    auth_token = db.Column(db.String(32),nullable=True)
     date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     isDeleted = db.Column(db.Boolean, nullable=False, default=False)
 
