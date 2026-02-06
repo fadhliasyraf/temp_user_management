@@ -18,6 +18,9 @@ def intial_app(config_name='development'):
 
     db.init_app(app)
 
+    from proj.views.dev import bp_dev
+    app.register_blueprint(bp_dev, url_prefix='/dev')
+
     from proj.views.user import bp_user
     app.register_blueprint(bp_user, url_prefix='/user')
 

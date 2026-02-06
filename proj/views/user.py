@@ -81,6 +81,11 @@ def update_user():
         updatedUser.rank = params["rank"]
         updatedUser.role = params["role"]
 
+
+        pwd_hasher = PasswordHash.recommended()
+        hashedPassword = pwd_hasher.hash(params['password'])
+        updatedUser.password = hashedPassword
+
         db.session.commit()
 
 
@@ -104,10 +109,15 @@ def register_user():
         newUser = User(
             params["name"],
             params["rank"],
-            params["role"],
+            # params["role"],
             params["username"],
             hashedPassword,
         )
+
+        admin_role = Role.query.filter_by(code='ADMIN').first()
+        maintenance_role = Role.query.filter_by(code='MAINTENANCE').first()
+        newUser.roles.append(admin_role)
+        newUser.roles.append(maintenance_role)
 
         db.session.add(newUser)
         db.session.commit()
