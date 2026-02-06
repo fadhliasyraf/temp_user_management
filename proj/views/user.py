@@ -70,6 +70,7 @@ def update_user():
     response = dict(code='111', data=list(), description="User updated successfully", status="OK")
     try:
         params = request.get_json()
+        print(params)
 
         updatedUser = User.query.filter(User.uuid == params["uuid"], User.isDeleted == False).first()
 
@@ -83,7 +84,7 @@ def update_user():
         updatedUser.rank_uuid = params["rank"]['value']
         updatedUser.roles = role
 
-        if 'password' in params and 'confirmPassword' in params and params['password'] == params['confirmPassword']:
+        if all(param in params for param in ['password', 'confirmPassword']) and params['password'] == params['confirmPassword'] and len(params['password']) != 0:
             pwd_hasher = PasswordHash.recommended()
             hashedPassword = pwd_hasher.hash(params['password'])
             updatedUser.password = hashedPassword
