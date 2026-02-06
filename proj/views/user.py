@@ -115,10 +115,10 @@ def register_user():
             hashedPassword,
         )
 
-        admin_role = Role.query.filter_by(code='ADMIN').first()
-        maintenance_role = Role.query.filter_by(code='MAINTENANCE').first()
-        newUser.roles.append(admin_role)
-        newUser.roles.append(maintenance_role)
+        for i in params["role"]:
+            selectedRole = Role.query.filter_by(uuid=i).first()
+
+            newUser.roles.append(selectedRole)
 
         db.session.add(newUser)
         db.session.commit()
