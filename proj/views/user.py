@@ -36,7 +36,7 @@ def get_profile():
 
         if userProfile:
             objUser = func.convert(userProfile)
-            del objUser["username"]
+            # del objUser["username"]
             del objUser["password"]
 
             response["data"] = objUser
@@ -70,7 +70,6 @@ def update_user():
     response = dict(code='111', data=list(), description="User updated successfully", status="OK")
     try:
         params = request.get_json()
-        print(params)
 
         updatedUser = User.query.filter(User.uuid == params["uuid"], User.isDeleted == False).first()
 
@@ -79,13 +78,15 @@ def update_user():
 
         role = [role['value'] for role in params['role']]
         role = Role.query.filter(Role.uuid.in_(role)).all()
+        updatedUser.username = params["username"]
         updatedUser.name = params["name"]
-        updatedUser.rank = params["rank"]
+        updatedUser.rank_uuid = params["rank"]['value']
         updatedUser.roles = role
 
-        pwd_hasher = PasswordHash.recommended()
-        hashedPassword = pwd_hasher.hash(params['password'])
-        updatedUser.password = hashedPassword
+        if 'password' in params and 'confirmPassword' in params and params['password'] == params['confirmPassword']:
+            pwd_hasher = PasswordHash.recommended()
+            hashedPassword = pwd_hasher.hash(params['password'])
+            updatedUser.password = hashedPassword
 
         db.session.commit()
 
