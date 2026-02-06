@@ -23,12 +23,21 @@ user_roles = db.Table(
 class User(db.Model):
     uuid = db.Column(db.String(32), primary_key=True)
     name = db.Column(db.String(200))
-    rank = db.Column(db.String(200))
+    rank_uuid = db.Column(
+        db.String(32),
+        db.ForeignKey('rank.uuid'),
+        nullable=True
+    )
     username = db.Column(db.String(255),unique=True)
     password = db.Column(db.String(255))
     token = db.Column(db.String(32),nullable=True)
     date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     isDeleted = db.Column(db.Boolean, nullable=False, default=False)
+
+    rank = db.relationship(
+        'Rank',
+        lazy='joined'
+    )
 
     roles = db.relationship(
         'Role',
