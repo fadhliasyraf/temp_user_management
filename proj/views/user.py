@@ -79,7 +79,7 @@ def update_user():
 
         role = [role['value'] for role in params['role']]
         role = Role.query.filter(Role.uuid.in_(role)).all()
-        updatedUser.username = params["username"]
+        # updatedUser.username = params["username"]
         updatedUser.name = params["name"]
         updatedUser.rank_uuid = params["rank"]['value']
         updatedUser.roles = role
