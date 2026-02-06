@@ -77,10 +77,11 @@ def update_user():
         if not updatedUser:
             raise Exception("User does not exist.")
 
+        role = [role['value'] for role in params['role']]
+        role = Role.query.filter(Role.uuid.in_(role)).all()
         updatedUser.name = params["name"]
         updatedUser.rank = params["rank"]
-        updatedUser.role = params["role"]
-
+        updatedUser.roles = role
 
         pwd_hasher = PasswordHash.recommended()
         hashedPassword = pwd_hasher.hash(params['password'])
