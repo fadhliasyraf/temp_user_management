@@ -10,10 +10,12 @@ def intial_app(config_name='development'):
     app = Flask(__name__, instance_relative_config=True)
 
     CORS(app)
-
+    print(config_name,111111111111111)
     app.config.from_object(config.config_setting[config_name])  # object-based default configuration
     app.config.from_pyfile('flask.cfg', silent=True)  # instance-folders configuration
 
+    if config_name == 'production':
+        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = config.config_setting[config_name].SQLALCHEMY_ENGINE_OPTIONS
     db.init_app(app)
 
     from proj.views.external import bp_external
