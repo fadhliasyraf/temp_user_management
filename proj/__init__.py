@@ -33,6 +33,10 @@ def intial_app(config_name='development'):
     from proj.views.lov import bp_lov
     app.register_blueprint(bp_lov, url_prefix='/lov')
 
+    @app.route('/status', methods=['GET'])
+    def new_api():
+        return f'User Management OK'
+
     with app.app_context():
         # db.drop_all()
         db.create_all()
