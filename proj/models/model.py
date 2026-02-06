@@ -4,9 +4,20 @@ from proj.models import db
 
 user_roles = db.Table(
     'user_roles',
-    db.Column('user_uuid', db.String(32), db.ForeignKey('user.uuid'), primary_key=True),
-    db.Column('role_id', db.String(32), db.ForeignKey('role.uuid'), primary_key=True)
+    db.Column(
+        'user_uuid',
+        db.String(32),
+        db.ForeignKey('user.uuid', ondelete='CASCADE'),
+        primary_key=True
+    ),
+    db.Column(
+        'role_id',
+        db.String(32),
+        db.ForeignKey('role.uuid', ondelete='CASCADE'),
+        primary_key=True
+    )
 )
+
 
 
 class User(db.Model):
@@ -15,12 +26,14 @@ class User(db.Model):
     rank = db.Column(db.String(200))
     username = db.Column(db.String(255),unique=True)
     password = db.Column(db.String(255))
+    token = db.Column(db.String(32),nullable=True)
     date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     isDeleted = db.Column(db.Boolean, nullable=False, default=False)
 
     roles = db.relationship(
         'Role',
         secondary=user_roles,
+        passive_deletes=True,
         lazy='subquery',
         backref=db.backref('users', lazy=True)
     )

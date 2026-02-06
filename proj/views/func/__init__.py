@@ -16,14 +16,11 @@ def convert(object):
         date_type = type(datetime.date(2022, 1, 1))
         # data["lob"] = object.demand_request2.requestor_lob
         for (k, v) in data.items():
-            print(k)
-            print(v)
             if isinstance(v, datetime_type):
                 data[k] = v.strftime("%Y-%m-%d %H:%M:%S")
             elif isinstance(v, date_type):
                 data[k] = v.strftime("%Y-%m-%d")
             elif k == 'roles':
-                print("masuk")
                 if v:
                     listRole = list()
                     for role in v:
