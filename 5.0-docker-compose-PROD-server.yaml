@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  fcs-um-be:
+    environment:
+      - TZ=Asia/Kuala_Lumpur
+      - ENVIRONMENT=production
+      - URL_PROD=fcs-um-be
+      - SHORT_REQUEST_SEC=60
+      - MAXIMUM_CONN_TIMEOUT_SEC=5
+      - LONG_REQUEST_SEC=120
+      - DB_USER=root
+      - DB_PASSWORD=Marlin2025
+      - DB_SERVER=192.168.0.76
+      - DB_SCHEMA=user_management
+
+    image: 'fcs-be-server:v1'
+    volumes:
+      - /data/um:/var/www/be/proj/static/uploads  # Mount the current directory to /var/www/be/ in the container
+      - ./:/var/www/be  # Mount the current directory to /var/www/be/ in the container
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+        max-file: "10"
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        max_replicas_per_node: 4
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+    stop_grace_period: 10s
+    restart: always
+    #    depends_on:
+    #      - mysql
+    networks:
+      - marlin_group
+    ports:
+      - 80:80
+#volumes:
+#  nfs_dpi_volume:
+#    driver: local
+#    driver_opts:
+#      type: "nfs"
+#      o: "addr=${NFS_SERVER},nolock,sync,rw"
+#      device: ":${NFS_PATH}"
+
+
+networks:
+  marlin_group:
+    external: true
+
+
+# NO CLUSTER: docker network create marlin_group
+# SWARM MODE: docker network create -d overlay --attachable marlin_group
