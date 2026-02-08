@@ -5,12 +5,11 @@ from proj import config
 from flask_cors import CORS
 from proj.models import db
 
-
+import os
 def intial_app(config_name='development'):
     app = Flask(__name__, instance_relative_config=True)
 
     CORS(app)
-    print(config_name,111111111111111)
     app.config.from_object(config.config_setting[config_name])  # object-based default configuration
     app.config.from_pyfile('flask.cfg', silent=True)  # instance-folders configuration
 
