@@ -10,13 +10,13 @@ services:
       - LONG_REQUEST_SEC=120
       - DB_USER=root
       - DB_PASSWORD=Marlin2025
-      - DB_SERVER=192.168.0.76
+      - DB_SERVER=mysql-db
       - DB_SCHEMA=user_management
 
     image: 'fcs-be-server:v1'
     volumes:
       - /data/um:/var/www/be/proj/static/uploads  # Mount the current directory to /var/www/be/ in the container
-      - ./:/var/www/be  # Mount the current directory to /var/www/be/ in the container
+      - /var/www/um/be:/var/www/be  # Mount the current directory to /var/www/be/ in the container
     logging:
       driver: "json-file"
       options:
@@ -39,8 +39,8 @@ services:
     #      - mysql
     networks:
       - marlin_group
-    ports:
-      - 80:80
+#    ports:
+#      - 80:80
 #volumes:
 #  nfs_dpi_volume:
 #    driver: local
