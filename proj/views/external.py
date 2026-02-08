@@ -49,7 +49,11 @@ def get_profile():
             # del objUser["username"]
             del objUser["password"]
             del objUser["auth_token"]
-
+            rolesName = ""
+            for i in userProfile.roles:
+                rolesName = rolesName + i.name + ","
+            objUser['role'] = rolesName
+            objUser['rank'] = userProfile.rank.name
             response["data"] = objUser
 
 
