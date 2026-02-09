@@ -82,9 +82,9 @@ def user_authentication():
 
         if 'role' in params:
             if params["role"]:
-                # do something
-                print(params["role"])
-                pass
+                has_role = any(role.code == params["role"] for role in userLogin.roles)
+                if not has_role:
+                    raise Exception("Authentication failed. User don't have this role.")
             else:
                 raise Exception("Authentication failed. Role is missing.")
         else:
