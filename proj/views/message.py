@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request, make_response,jsonify
-import sys, os, json
-from proj.models.model import *
-from proj.views import func
+from datetime import datetime
 
+from flask import Blueprint, request, jsonify
+from proj.models.model import *
 
 bp_message = Blueprint('bp_message', __name__)
 
@@ -19,3 +18,32 @@ def send_message():
 
     return jsonify(response)
 
+
+@bp_message.route('/delete_message', methods=['DELETE'])
+def delete_message():
+    response = dict(code='111', data=dict(), description="Message deleted successfully", status="OK")
+    try:
+        data = request.get_json()
+        message_id = data.get('id')
+
+        if not message_id:
+            response = dict(code='000', data='', description="Message ID is required", status="FAILED")
+            return jsonify(response)
+
+        # Find the message
+        message = Message.query.filter_by(id=message_id, isDeleted=None).first()
+
+        if not message:
+            response = dict(code='000', data='', description="Message not found or already deleted", status="FAILED")
+            return jsonify(response)
+
+        # Soft delete by setting current timestamp
+        message.isDeleted = datetime.now()
+        db.session.commit()
+
+    except Exception as e:
+        db.session.rollback()
+        msg = str(e)
+        response = dict(code='000', data='', description=str(msg), status="FAILED")
+
+    return jsonify(response)
