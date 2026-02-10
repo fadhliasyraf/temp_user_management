@@ -137,7 +137,7 @@ def create_default_user(*args, **kwargs):
 
 
 class Message(db.Model):
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     from_user = db.Column(db.String(255), nullable=False)
     to_user = db.Column(db.String(255), nullable=False)
     type = db.Column(db.String(255), nullable=False)
