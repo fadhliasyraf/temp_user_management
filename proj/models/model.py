@@ -138,8 +138,8 @@ def create_default_user(*args, **kwargs):
 
 class Message(db.Model):
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
-    from_user = db.Column(db.String(255), nullable=False)
-    to_user = db.Column(db.String(255), nullable=False)
+    from_user = db.Column(db.String(255), nullable=False, index=True)
+    to_user = db.Column(db.String(255), nullable=False, index=True)
     type = db.Column(db.String(255), nullable=False)
     message = db.Column(db.Text, nullable=False)
     date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
