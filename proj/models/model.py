@@ -135,3 +135,18 @@ def create_default_user(*args, **kwargs):
         db.session.commit()
         print("Default admin user created")
 
+
+class Message(db.Model):
+    id = db.Column(db.BigInteger, primary_key=True)
+    from_user = db.Column(db.String(255), nullable=False)
+    to_user = db.Column(db.String(255), nullable=False)
+    type = db.Column(db.String(255), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+    isDeleted = db.Column(db.DateTime, nullable=True)
+
+    def __init__(self, from_user, to_user, message):
+        self.from_user = from_user
+        self.to_user = to_user
+        self.message = message
+
