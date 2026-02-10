@@ -100,6 +100,7 @@ def user_authentication():
         db.session.commit()
 
         response["data"]["token"] = userLogin.auth_token
+        response["data"]["role"] = params["role"]
 
 
     except Exception as e:
@@ -109,3 +110,31 @@ def user_authentication():
     return jsonify(response)
 
 
+@bp_external.route('/change_password', methods=['POST'])
+def change_password():
+    response = dict(code='111', data=dict(), description="User password changed successfully", status="OK")
+    try:
+        params = request.get_json()
+        print(params)
+
+        pwd_hasher = PasswordHash.recommended()
+
+        user = User.query.filter(User.username == params["username"], User.isDeleted == False).first()
+        if not user:
+            raise Exception("User not found.")
+
+        if user:
+            if pwd_hasher.verify(params['old_password'], user.password):
+                hashedPassword = pwd_hasher.hash(params['new_password'])
+                user.password = hashedPassword
+            else:
+                raise Exception("Old password not matched.")
+
+        db.session.commit()
+
+    except Exception as e:
+        msg = str(e)
+        print(msg)
+        response = dict(code='000', data='', description=str(msg), status="FAILED")
+
+    return jsonify(response)

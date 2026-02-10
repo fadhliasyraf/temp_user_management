@@ -103,8 +103,10 @@ def create_default_user(*args, **kwargs):
     # Default roles
     default_roles = [
         ('ADMIN', 'Admin'),
-        ('MAINTENANCE', 'Maintenance'),
-        ('WAROFFICE', 'War Office')
+        ('Weapon Controller', 'Weapon Controller'),
+        ('Warfare Director', 'Warfare Director'),
+        ('Picture Controller', 'Picture Controller'),
+        ('Maintenance', 'Maintainer')
     ]
 
     for code, name in default_roles:
