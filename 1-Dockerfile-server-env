@@ -39,6 +39,7 @@ RUN pip install --break-system-packages --no-cache-dir uwsgi
 RUN pip install --break-system-packages --no-cache-dir pwdlib==0.3.0
 RUN pip install --break-system-packages --no-cache-dir Flask-Cors==3.0.10
 RUN pip install --break-system-packages --no-cache-dir "pwdlib[argon2]"
+RUN pip install --break-system-packages --no-cache-dir cryptography
 
 # Set up permissions and working directories
 RUN mkdir -p /var/cache/fontconfig /var/www/temp /var/log/uwsgi && \
@@ -53,6 +54,6 @@ CMD ["bash"]
 
 
 
-# 1.docker build --debug -f 1-Dockerfile-server-env -t fcs-be-env-server:v1 .
+# 1.docker build  -f 1-Dockerfile-server-env -t fcs-be-env-server:v1 .
 # 2. # docker tag   fcs-be-env-server:v1 192.168.5.130/iewes/fcs-be-env-server:v1
 
