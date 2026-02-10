@@ -20,6 +20,9 @@ def intial_app(config_name='development'):
     from proj.views.external import bp_external
     app.register_blueprint(bp_external, url_prefix='/external')
 
+    from proj.views.message import bp_message
+    app.register_blueprint(bp_message, url_prefix='/message')
+
     from proj.views.dev import bp_dev
     app.register_blueprint(bp_dev, url_prefix='/dev')
 
