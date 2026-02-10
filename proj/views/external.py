@@ -1,3 +1,6 @@
+import os
+import sys
+
 from flask import Blueprint, request ,jsonify
 from proj.models.model import *
 from proj.views import func
@@ -124,6 +127,9 @@ def change_password():
             raise Exception("User not found.")
 
         if user:
+            if 'old_password' in params and params['old_password'] in [None,""] or params['new_password'] in [None, ""]:
+                raise Exception("old password or new password is missing.")
+
             if pwd_hasher.verify(params['old_password'], user.password):
                 hashedPassword = pwd_hasher.hash(params['new_password'])
                 user.password = hashedPassword
@@ -133,8 +139,11 @@ def change_password():
         db.session.commit()
 
     except Exception as e:
-        msg = str(e)
-        print(msg)
+        msg = e
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        err = exc_obj, fname, "Line number : ", exc_tb.tb_lineno
+        print(err)
         response = dict(code='000', data='', description=str(msg), status="FAILED")
 
     return jsonify(response)
