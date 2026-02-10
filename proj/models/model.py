@@ -145,8 +145,9 @@ class Message(db.Model):
     date_created = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     isDeleted = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self, from_user, to_user, message):
+    def __init__(self, from_user, to_user, type, message):
         self.from_user = from_user
         self.to_user = to_user
+        self.type = type
         self.message = message
 
