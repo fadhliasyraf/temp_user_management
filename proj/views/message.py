@@ -11,10 +11,29 @@ bp_message = Blueprint('bp_message', __name__)
 def send_message():
     response = dict(code='111', data=dict(), description="Message sent successfully", status="OK")
     try:
-        pass
+        params = request.get_json()
+        print(params)
+
+        required_fields = ["from_role", "to_role", "type", "message"]
+
+        for i in required_fields:
+            if not params[i]:
+                raise Exception("Required values missing.")
+
+
+        createdMsg = Message(
+            params["from_role"],
+            params["to_role"],
+            params["type"],
+            params["message"],
+        )
+
+        db.session.add(createdMsg)
+        db.session.commit()
 
     except Exception as e:
         msg = str(e)
+        print(msg)
         response = dict(code='000', data='', description=str(msg), status="FAILED")
 
     return jsonify(response)
