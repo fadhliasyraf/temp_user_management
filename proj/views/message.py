@@ -109,14 +109,14 @@ def get_new_messages(role, index):
                 'id': msg.id,
                 'from_user': msg.from_user,
                 'to_user': msg.to_user,
-                'type': msg.type,
+                'message_type': msg.type,
                 'message': msg.message,
-                'date_created': msg.date_created.strftime('%d-%m-%Y %H:%M:%S') if msg.date_created else None
+                'date_created': msg.date_created.strftime('%d/%m/%Y %H:%M:%S') if msg.date_created else None
             }
             for msg in new_messages
         ]
 
-        response['data'] = {'messages': messages_list, 'count': len(messages_list)}
+        response['data'] = messages_list
 
     except Exception as e:
         msg = str(e)
